@@ -1,26 +1,22 @@
-
-def day4a(file_name):
-    total_overlaps = 0
+def process_range_file(file_name, comparator):
+    count = 0
     with open(file_name) as f:
         for line in f:
             line = line.strip()
             range_1, range_2 = list(map(lambda x: list(map(int, x.split('-'))), line.split(',')))
-            if (range_1[0] <= range_2[0] and range_1[1] >= range_2[1]) or (range_2[0] <= range_1[0] and range_2[1] >= range_1[1]):
-                total_overlaps += 1
+            if comparator(range_1, range_2):
+                count += 1
 
-    print(total_overlaps)
+    return count
+
+
+def day4a(file_name):
+    print(process_range_file(file_name, lambda x, y:
+                             (x[0] <= y[0] and x[1] >= y[1]) or (y[0] <= x[0] and y[1] >= x[1])))
 
 
 def day4b(file_name):
-    overlaps = 0
-    with open(file_name) as f:
-        for line in f:
-            line = line.strip()
-            range_1, range_2 = list(map(lambda x: list(map(int, x.split('-'))), line.split(',')))
-            if max(range_1[0], range_2[0]) <= min(range_1[1], range_2[1]):
-                overlaps += 1
-
-    print(overlaps)
+    print(process_range_file(file_name, lambda x, y: max(x[0], y[0]) <= min(x[1], y[1])))
 
 
 if __name__ == '__main__':
